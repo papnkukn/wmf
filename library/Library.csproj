@@ -45,6 +45,10 @@
     <Compile Include="Enums\MapMode.cs" />
     <Compile Include="Enums\PenStyle.cs" />
     <Compile Include="Enums\PolyFillMode.cs" />
+    <Compile Include="Records\WmfArcRecord.cs" />
+    <Compile Include="Records\WmfEllipseRecord.cs" />
+    <Compile Include="Records\WmfMoveToRecord.cs" />
+    <Compile Include="Records\WmfLineToRecord.cs" />
     <Compile Include="Records\WmfPolyPolygonRecord.cs" />
     <Compile Include="Records\WmfSetPolyFillModeRecord.cs" />
     <Compile Include="Records\WmfRectangleRecord.cs" />

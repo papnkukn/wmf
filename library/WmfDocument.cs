@@ -20,6 +20,11 @@ namespace Oxage.Wmf
 			this.Records.Add(new WmfSetWindowExtRecord()); //Add SetWindowExtRecord for compatibility
 		}
 
+        /// <summary>
+        /// Get the current position
+        /// </summary>
+        public Point Position { get; private set; }
+
 		public List<IBinaryRecord> Records
 		{
 			get;
@@ -150,6 +155,18 @@ namespace Oxage.Wmf
 			return builder.ToString();
 		}
 
+        /// <summary>
+        /// Move the current position to the destination
+        /// </summary>
+        /// <param name="destination"></param>
+        public void MoveTo(Point destination)
+        {
+            var record = new WmfMoveToRecord();
+            record.SetDestination(destination);
+            this.Records.Add(record);
+            this.Position = destination;
+        }
+
 		public void AddSelectObject(int index)
 		{
 			this.Records.Add(new WmfSelectObjectRecord() { ObjectIndex = (ushort)index });
@@ -159,6 +176,30 @@ namespace Oxage.Wmf
 		{
 			this.Records.Add(new WmfDeleteObjectRecord() { ObjectIndex = (ushort)index });
 		}
+
+        /// <summary>
+        /// Add a line from start to end.
+        /// </summary>
+        /// <param name="start">Starting Point</param>
+        /// <param name="end">Ending Point</param>
+        public void AddLine(Point start, Point end)
+        {
+            var oldPosition = this.Position;
+            MoveTo(start);
+            AddLineTo(end.X, end.Y);
+            MoveTo(oldPosition);
+        }
+
+        /// <summary>
+        /// Add a line from current Position to (x,y)
+        /// </summary>
+        /// <param name="destination"></param>
+        public void AddLineTo(int x, int y)
+        {
+            var record = new WmfLineToRecord();
+            record.SetDestination(new Point(x, y));
+            this.Records.Add(record);
+        }
 
 		public void AddPolyline(IEnumerable<Point> points)
 		{
@@ -199,6 +240,55 @@ namespace Oxage.Wmf
 			record.SetRectangle(new Rectangle(x, y, width, height));
 			this.Records.Add(record);
 		}
+
+        /// <summary>
+        /// Add an ellipse by specifying its bounding rectangle.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public void AddEllipse(int x, int y, int width, int height)
+        {
+            var record = new WmfEllipseRecord();
+            record.SetRectangle(new Rectangle(x, y, width, height));
+            this.Records.Add(record);
+        }
+
+        /// <summary>
+        /// Add an ellipse by specifying its center and x/y radius
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        public void AddEllipse(Point center, Point radius)
+        {
+            var record = new WmfEllipseRecord();
+            record.SetEllipse(center, radius);
+            this.Records.Add(record);
+        }
+
+        /// <summary>
+        /// Add a circle (equi-radius ellipse) by specifying its center and radius
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        public void AddCircle(int x, int y, int radius)
+        {
+            AddEllipse(new Point(x, y), new Point(radius, radius));
+        }
+
+        /// <summary>
+        /// Draws an arc. Doesn't seem to preserve shape when ungrouped in excel.
+        /// </summary>
+        /// <param name="rectangle"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public void AddArc(Rectangle rectangle, Point start, Point end)
+        {
+            var record = new WmfArcRecord();
+            record.SetArc(rectangle, start, end);
+            this.Records.Add(record);
+        }
 
 		public void AddPolyFillMode(PolyFillMode mode)
 		{
