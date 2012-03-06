@@ -41,10 +41,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\BrushStyle.cs" />
+    <Compile Include="Enums\CharacterSet.cs" />
+    <Compile Include="Enums\ClipPrecision.cs" />
+    <Compile Include="Enums\FamilyFont.cs" />
+    <Compile Include="Enums\FontQuality.cs" />
     <Compile Include="Enums\HatchStyle.cs" />
     <Compile Include="Enums\MapMode.cs" />
+    <Compile Include="Enums\MixMode.cs" />
+    <Compile Include="Enums\OutPrecision.cs" />
     <Compile Include="Enums\PenStyle.cs" />
+    <Compile Include="Enums\PitchFont.cs" />
     <Compile Include="Enums\PolyFillMode.cs" />
+    <Compile Include="Enums\TextAlignmentMode.cs" />
+    <Compile Include="Records\WmfSetBkModeRecord.cs" />
+    <Compile Include="Records\WmfCreateFontIndirectRecord.cs" />
+    <Compile Include="Records\WmfSetTextJustificationRecord.cs" />
+    <Compile Include="Records\WmfSetTextColorRecord.cs" />
+    <Compile Include="Records\WmfSetTextCharExtraRecord.cs" />
+    <Compile Include="Records\WmfSetTextAlignRecord.cs" />
+    <Compile Include="Records\WmfTextoutRecord.cs" />
+    <Compile Include="Records\WmfSetPixelRecord.cs" />
+    <Compile Include="Records\WmfRoundRectRecord.cs" />
     <Compile Include="Records\WmfArcRecord.cs" />
     <Compile Include="Records\WmfEllipseRecord.cs" />
     <Compile Include="Records\WmfMoveToRecord.cs" />

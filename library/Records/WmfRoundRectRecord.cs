@@ -4,14 +4,23 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
-	//NOTE: Even if WmfEllipseRecord has the same parameters as WmfRectangleRecord
-	//it must NOT inherit it because it may cause unexpected behaviours when reading
-	//or comparing. Inheriting should always be done from WmfBinaryRecord.
-	[WmfRecord(Type = RecordType.META_ELLIPSE, Size = 7)]
-	public class WmfEllipseRecord : WmfBinaryRecord
+	[WmfRecord(Type = RecordType.META_ROUNDRECT, Size = 9)]
+	public class WmfRoundRectRecord : WmfBinaryRecord
 	{
-		public WmfEllipseRecord() : base()
+		public WmfRoundRectRecord() : base()
 		{
+		}
+
+		public short Width
+		{
+			get;
+			set;
+		}
+
+		public short Height
+		{
+			get;
+			set;
 		}
 
 		public short BottomRect
@@ -38,16 +47,10 @@ namespace Oxage.Wmf.Records
 			set;
 		}
 
-		public void SetEllipse(Point center, Point radius)
+		public void SetRectangle(Rectangle rect, int cornerRadius = 0)
 		{
-			this.SetRectangle(new Rectangle(
-					new Point(center.X - radius.X, center.Y - radius.Y),
-					new Size(radius.X + radius.X, radius.Y + radius.Y)
-					));
-		}
-
-		public void SetRectangle(Rectangle rect)
-		{
+			this.Width = (short)cornerRadius;
+			this.Height = (short)cornerRadius;
 			this.TopRect = (short)rect.Top;
 			this.LeftRect = (short)rect.Left;
 			this.BottomRect = (short)rect.Bottom;
@@ -59,8 +62,22 @@ namespace Oxage.Wmf.Records
 			return new Rectangle(this.LeftRect, this.TopRect, this.RightRect - this.LeftRect, this.BottomRect - this.TopRect);
 		}
 
+		/// <summary>
+		/// Gets corner radius. See remarks.
+		/// </summary>
+		/// <remarks>
+		/// Assumes that Width equals Height.
+		/// </remarks>
+		/// <returns></returns>
+		public int GetCornerRadius()
+		{
+			return this.Width;
+		}
+
 		public override void Read(BinaryReader reader)
 		{
+			this.Width = reader.ReadInt16();
+			this.Height = reader.ReadInt16();
 			this.BottomRect = reader.ReadInt16();
 			this.RightRect = reader.ReadInt16();
 			this.TopRect = reader.ReadInt16();
@@ -70,6 +87,8 @@ namespace Oxage.Wmf.Records
 		public override void Write(BinaryWriter writer)
 		{
 			base.Write(writer);
+			writer.Write(this.Width);
+			writer.Write(this.Height);
 			writer.Write(this.BottomRect);
 			writer.Write(this.RightRect);
 			writer.Write(this.TopRect);
@@ -79,6 +98,8 @@ namespace Oxage.Wmf.Records
 		protected override void Dump(StringBuilder builder)
 		{
 			base.Dump(builder);
+			builder.AppendLine("Width: " + this.Width);
+			builder.AppendLine("Height: " + this.Height);
 			builder.AppendLine("BottomRect: " + this.BottomRect);
 			builder.AppendLine("RightRect: " + this.RightRect);
 			builder.AppendLine("TopRect: " + this.TopRect);

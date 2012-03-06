@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using Oxage.Wmf;
+using Oxage.Wmf.Records;
 
 namespace Oxage
 {
@@ -14,7 +16,7 @@ namespace Oxage
 			{
 				//var wmf = new WmfDocument();
 				//wmf.Load("sample.wmf");
-				CreateSample("sample.wmf");
+				CreateFeatureSample("sample.wmf");
 				return;
 			}
 #endif
@@ -47,7 +49,8 @@ namespace Oxage
 					break;
 
 				case "sample":
-					CreateSample(path);
+					//CreateFeatureSample(path);
+					CreateOfficialSample(path);
 					break;
 
 				default:
@@ -56,20 +59,69 @@ namespace Oxage
 			}
 		}
 
-		public static void CreateSample(string path)
+		/// <summary>
+		/// Creates an example from the official specification document.
+		/// </summary>
+		/// <param name="path"></param>
+		public static void CreateOfficialSample(string path)
+		{
+			var wmf = WmfHelper.GetExampleFromSpecificationDocument();
+			wmf.Records.Insert(0, new WmfFormat() { Right = 0x0096, Bottom = 0x0046, Unit = 100 });
+			wmf.Save(path);
+		}
+
+		/// <summary>
+		/// Creates an example with implemented features.
+		/// </summary>
+		/// <param name="path"></param>
+		public static void CreateFeatureSample(string path)
 		{
 			var wmf = new WmfDocument();
 			wmf.Width = 1000;
 			wmf.Height = 1000;
 			wmf.Format.Unit = 288;
 			wmf.AddPolyFillMode(PolyFillMode.WINDING);
+
+			//Define fill brush
 			wmf.AddCreateBrushIndirect(Color.Blue, BrushStyle.BS_SOLID);
 			wmf.AddSelectObject(0);
+
+			//Define stroke brush
 			wmf.AddCreatePenIndirect(Color.Black, PenStyle.PS_SOLID, 1);
 			wmf.AddSelectObject(1);
-			wmf.AddRectangle(100, 100, 800, 800);
+
+			//Shapes
+			wmf.AddRectangle(new Point(100, 100), new Size(800, 800), 50);
+			wmf.AddPolyPolygon(new List<IEnumerable<Point>>()
+			{
+			  //Polygon 1
+			  new List<Point>()
+			  {
+			    new Point(150, 150),
+					new Point(150 + 700, 150),
+					new Point(150 + 700, 150 + 700),
+					new Point(150, 150 + 700),
+					new Point(150, 150),
+			  },
+			  //Polygon 2
+				//new List<Point>()
+				//{
+				//  new Point()
+				//}
+			});
+			wmf.AddEllipse(new Point(500, 500), new Point(250, 200));
+			wmf.AddCircle(new Point(500, 500), 100);
+
+			//Text
+			wmf.AddCreateFontIndirect("Arial", -48);
+			wmf.AddSelectObject(2);
+			wmf.AddTextColor(Color.Green);
+			wmf.AddTextAlignment(TextAlignmentMode.TA_CENTER);
+			wmf.AddText("Hello World!", new Point(500, 24));
+
 			wmf.AddDeleteObject(0);
 			wmf.AddDeleteObject(1);
+			wmf.AddDeleteObject(2);
 			wmf.Save(path);
 		}
 	}

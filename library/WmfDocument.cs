@@ -20,10 +20,10 @@ namespace Oxage.Wmf
 			this.Records.Add(new WmfSetWindowExtRecord()); //Add SetWindowExtRecord for compatibility
 		}
 
-        /// <summary>
-        /// Get the current position
-        /// </summary>
-        public Point Position { get; private set; }
+		/// <summary>
+		/// Get the current position
+		/// </summary>
+		public Point Position { get; private set; }
 
 		public List<IBinaryRecord> Records
 		{
@@ -155,17 +155,17 @@ namespace Oxage.Wmf
 			return builder.ToString();
 		}
 
-        /// <summary>
-        /// Move the current position to the destination
-        /// </summary>
-        /// <param name="destination"></param>
-        public void MoveTo(Point destination)
-        {
-            var record = new WmfMoveToRecord();
-            record.SetDestination(destination);
-            this.Records.Add(record);
-            this.Position = destination;
-        }
+		/// <summary>
+		/// Move the current position to the destination
+		/// </summary>
+		/// <param name="destination"></param>
+		public void MoveTo(Point destination)
+		{
+			var record = new WmfMoveToRecord();
+			record.SetDestination(destination);
+			this.Records.Add(record);
+			this.Position = destination;
+		}
 
 		public void AddSelectObject(int index)
 		{
@@ -177,29 +177,29 @@ namespace Oxage.Wmf
 			this.Records.Add(new WmfDeleteObjectRecord() { ObjectIndex = (ushort)index });
 		}
 
-        /// <summary>
-        /// Add a line from start to end.
-        /// </summary>
-        /// <param name="start">Starting Point</param>
-        /// <param name="end">Ending Point</param>
-        public void AddLine(Point start, Point end)
-        {
-            var oldPosition = this.Position;
-            MoveTo(start);
-            AddLineTo(end.X, end.Y);
-            MoveTo(oldPosition);
-        }
+		/// <summary>
+		/// Add a line from start to end.
+		/// </summary>
+		/// <param name="start">Starting Point</param>
+		/// <param name="end">Ending Point</param>
+		public void AddLine(Point start, Point end)
+		{
+			var oldPosition = this.Position;
+			MoveTo(start);
+			AddLineTo(end.X, end.Y);
+			MoveTo(oldPosition);
+		}
 
-        /// <summary>
-        /// Add a line from current Position to (x,y)
-        /// </summary>
-        /// <param name="destination"></param>
-        public void AddLineTo(int x, int y)
-        {
-            var record = new WmfLineToRecord();
-            record.SetDestination(new Point(x, y));
-            this.Records.Add(record);
-        }
+		/// <summary>
+		/// Add a line from current Position to (x,y)
+		/// </summary>
+		/// <param name="destination"></param>
+		public void AddLineTo(int x, int y)
+		{
+			var record = new WmfLineToRecord();
+			record.SetDestination(new Point(x, y));
+			this.Records.Add(record);
+		}
 
 		public void AddPolyline(IEnumerable<Point> points)
 		{
@@ -234,85 +234,162 @@ namespace Oxage.Wmf
 			this.Records.Add(record);
 		}
 
-		public void AddRectangle(int x, int y, int width, int height)
+		public void AddRectangle(int x, int y, int width, int height, int cornerRadius = 0)
 		{
-			var record = new WmfRectangleRecord();
+			AddRectangle(new Rectangle(x, y, width, height), cornerRadius);
+		}
+
+		public void AddRectangle(Point corner, Size size, int cornerRadius = 0)
+		{
+			AddRectangle(new Rectangle(corner.X, corner.Y, size.Width, size.Height), cornerRadius);
+		}
+
+		public void AddRectangle(Rectangle rect, int cornerRadius = 0)
+		{
+			if (cornerRadius > 0)
+			{
+				//Rounded rectangle
+				var record = new WmfRoundRectRecord();
+				record.SetRectangle(rect, cornerRadius);
+				this.Records.Add(record);
+			}
+			else
+			{
+				//Classic rectangle
+				var record = new WmfRectangleRecord();
+				record.SetRectangle(rect);
+				this.Records.Add(record);
+			}
+		}
+
+		/// <summary>
+		/// Add an ellipse by specifying its bounding rectangle.
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		public void AddEllipse(int x, int y, int width, int height)
+		{
+			var record = new WmfEllipseRecord();
 			record.SetRectangle(new Rectangle(x, y, width, height));
 			this.Records.Add(record);
 		}
 
-        /// <summary>
-        /// Add an ellipse by specifying its bounding rectangle.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void AddEllipse(int x, int y, int width, int height)
-        {
-            var record = new WmfEllipseRecord();
-            record.SetRectangle(new Rectangle(x, y, width, height));
-            this.Records.Add(record);
-        }
+		/// <summary>
+		/// Add an ellipse by specifying its center and x/y radius
+		/// </summary>
+		/// <param name="center"></param>
+		/// <param name="radius"></param>
+		public void AddEllipse(Point center, Point radius)
+		{
+			var record = new WmfEllipseRecord();
+			record.SetEllipse(center, radius);
+			this.Records.Add(record);
+		}
 
-        /// <summary>
-        /// Add an ellipse by specifying its center and x/y radius
-        /// </summary>
-        /// <param name="center"></param>
-        /// <param name="radius"></param>
-        public void AddEllipse(Point center, Point radius)
-        {
-            var record = new WmfEllipseRecord();
-            record.SetEllipse(center, radius);
-            this.Records.Add(record);
-        }
+		/// <summary>
+		/// Add a circle (equi-radius ellipse) by specifying its center and radius
+		/// </summary>
+		/// <param name="center"></param>
+		/// <param name="radius"></param>
+		public void AddCircle(int x, int y, int radius)
+		{
+			AddEllipse(new Point(x, y), new Point(radius, radius));
+		}
 
-        /// <summary>
-        /// Add a circle (equi-radius ellipse) by specifying its center and radius
-        /// </summary>
-        /// <param name="center"></param>
-        /// <param name="radius"></param>
-        public void AddCircle(int x, int y, int radius)
-        {
-            AddEllipse(new Point(x, y), new Point(radius, radius));
-        }
+		/// <summary>
+		/// Add a circle (equi-radius ellipse) by specifying its center and radius
+		/// </summary>
+		/// <param name="center"></param>
+		/// <param name="radius"></param>
+		public void AddCircle(Point center, int radius)
+		{
+			AddEllipse(center, new Point(radius, radius));
+		}
 
-        /// <summary>
-        /// Draws an arc. Doesn't seem to preserve shape when ungrouped in excel.
-        /// </summary>
-        /// <param name="rectangle"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        public void AddArc(Rectangle rectangle, Point start, Point end)
-        {
-            var record = new WmfArcRecord();
-            record.SetArc(rectangle, start, end);
-            this.Records.Add(record);
-        }
+		/// <summary>
+		/// Draws an arc. Doesn't seem to preserve shape when ungrouped in excel.
+		/// </summary>
+		/// <param name="rectangle"></param>
+		/// <param name="start"></param>
+		/// <param name="end"></param>
+		public void AddArc(Rectangle rectangle, Point start, Point end)
+		{
+			var record = new WmfArcRecord();
+			record.SetArc(rectangle, start, end);
+			this.Records.Add(record);
+		}
 
 		public void AddPolyFillMode(PolyFillMode mode)
 		{
 			this.Records.Add(new WmfSetPolyFillModeRecord() { Mode = mode });
 		}
 
-		public void AddCreateBrushIndirect(Color color, BrushStyle style = BrushStyle.BS_SOLID, HatchStyle hatch = HatchStyle.HS_HORIZONTAL)
+		public WmfCreateBrushIndirectRecord AddCreateBrushIndirect(Color color, BrushStyle style = BrushStyle.BS_SOLID, HatchStyle hatch = HatchStyle.HS_HORIZONTAL)
 		{
-			this.Records.Add(new WmfCreateBrushIndirectRecord()
+			var record = new WmfCreateBrushIndirectRecord()
 			{
 				Color = color,
 				Style = style,
 				Hatch = hatch
-			});
+			};
+
+			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddCreatePenIndirect(Color color, PenStyle style = PenStyle.PS_SOLID, int size = 1)
+		public WmfCreatePenIndirectRecord AddCreatePenIndirect(Color color, PenStyle style = PenStyle.PS_SOLID, int size = 1)
 		{
-			this.Records.Add(new WmfCreatePenIndirectRecord()
+			var record = new WmfCreatePenIndirectRecord()
 			{
 				Color = color,
 				Style = style,
 				Width = new Point(size, size)
+			};
+
+			this.Records.Add(record);
+			return record;
+		}
+
+		public WmfCreateFontIndirectRecord AddCreateFontIndirect(string fontName, int size, int weight = 400, bool italic = false, bool underline = false)
+		{
+			var record = new WmfCreateFontIndirectRecord()
+			{
+				Height = (short)size,
+				Weight = (short)weight,
+				Italic = italic,
+				Underline = underline,
+				FaceName = fontName
+			};
+
+			this.Records.Add(record);
+			return record;
+		}
+
+		public void AddTextAlignment(TextAlignmentMode mode)
+		{
+			this.Records.Add(new WmfSetTextAlignRecord() { Mode = mode });
+		}
+
+		public void AddTextColor(Color color)
+		{
+			this.Records.Add(new WmfSetTextColorRecord() { Color = color });
+		}
+
+		public void AddText(string text, int x = 0, int y = 0)
+		{
+			this.Records.Add(new WmfTextoutRecord()
+			{
+				StringValue = text,
+				XStart = (short)x,
+				YStart = (short)y
 			});
+		}
+
+		public void AddText(string text, Point start)
+		{
+			AddText(text, start.X, start.Y);
 		}
 	}
 }

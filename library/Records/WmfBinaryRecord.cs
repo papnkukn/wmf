@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
+	/// <summary>
+	/// Implements a WMF META record. Each inherited record should also define WmfRecordAttribute above the class definition.
+	/// NOTE: Always inherit META record directly from this class to avoid conflicts with different WmfRecordAttribute values.
+	/// </summary>
 	public abstract class WmfBinaryRecord : IBinaryRecord
 	{
 		#region Constructor
@@ -61,6 +65,11 @@ namespace Oxage.Wmf.Records
 		#endregion
 
 		#region IBinaryRecord Members
+		/// <summary>
+		/// Reads a record from binary stream. If this method is not overridden it will skip this record and go to next record.
+		/// NOTE: When overriding this method remove the base.Read(reader) line from code.
+		/// </summary>
+		/// <param name="reader"></param>
 		public virtual void Read(BinaryReader reader)
 		{
 			//RecordSize and RecordType should already be set by WmfReader
@@ -73,11 +82,17 @@ namespace Oxage.Wmf.Records
 			}
 		}
 
+		/// <summary>
+		/// Writes a record to binary stream. This method must be overridden if RecordSize > 3 and
+		/// should include base.Write(writer) in overridden method (unlike Read where base method
+		/// should be removed)
+		/// </summary>
+		/// <param name="writer"></param>
 		public virtual void Write(BinaryWriter writer)
 		{
 			if (this.RecordSize < 3)
 			{
-				throw new WmfException("RecordSize cannot be lower than 3 WORDs!");
+				throw new WmfException("RecordSize cannot be lower than 3 WORDs! Record: " + this.GetType());
 			}
 
 			writer.Write((uint)this.RecordSize);
