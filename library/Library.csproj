@@ -49,10 +49,14 @@
     <Compile Include="Enums\MapMode.cs" />
     <Compile Include="Enums\MixMode.cs" />
     <Compile Include="Enums\OutPrecision.cs" />
+    <Compile Include="Enums\PaletteEntryFlag.cs" />
     <Compile Include="Enums\PenStyle.cs" />
     <Compile Include="Enums\PitchFont.cs" />
     <Compile Include="Enums\PolyFillMode.cs" />
     <Compile Include="Enums\TextAlignmentMode.cs" />
+    <Compile Include="Records\WmfCreatePalette.cs" />
+    <Compile Include="Records\WmfRealizePalette.cs" />
+    <Compile Include="Records\WmfSelectPalette.cs" />
     <Compile Include="Records\WmfSetBkModeRecord.cs" />
     <Compile Include="Records\WmfCreateFontIndirectRecord.cs" />
     <Compile Include="Records\WmfSetTextJustificationRecord.cs" />
@@ -69,6 +73,9 @@
     <Compile Include="Records\WmfPolyPolygonRecord.cs" />
     <Compile Include="Records\WmfSetPolyFillModeRecord.cs" />
     <Compile Include="Records\WmfRectangleRecord.cs" />
+    <Compile Include="Objects\WmfBinaryObject.cs" />
+    <Compile Include="Objects\WmfPaletteEntryObject.cs" />
+    <Compile Include="Objects\WmfPaletteObject.cs" />
     <Compile Include="WmfHelper.cs" />
     <Compile Include="WmfReader.cs" />
     <Compile Include="Enums\MetafileType.cs" />

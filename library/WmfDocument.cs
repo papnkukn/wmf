@@ -96,15 +96,13 @@ namespace Oxage.Wmf
 			this.Records = new List<IBinaryRecord>();
 			using (var reader = new WmfReader(stream))
 			{
-				while (true)
+				while (!reader.IsEndOfFile)
 				{
 					try
 					{
 						var record = reader.Read();
 						if (record != null)
-						{
 							this.Records.Add(record);
-						}
 					}
 					catch (EndOfStreamException)
 					{

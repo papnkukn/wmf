@@ -17,7 +17,8 @@ namespace Oxage.Wmf.Records
 			if (attribute != null)
 			{
 				this.RecordType = attribute.Type;
-				this.RecordSize = attribute.Size;
+				if (!attribute.SizeIsVariable)
+					this.RecordSize = attribute.Size;
 			}
 		}
 		#endregion

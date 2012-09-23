@@ -26,5 +26,14 @@ namespace Oxage.Wmf
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Gets or sets if the size is defined as variable (false by default)
+		/// </summary>
+		public bool SizeIsVariable
+		{
+			get;
+			set;
+		}
 	}
 }

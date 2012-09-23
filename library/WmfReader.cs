@@ -32,8 +32,7 @@ namespace Oxage.Wmf
 
 		public bool IsEndOfFile
 		{
-			get;
-			protected set;
+			get { return stream.Length == stream.Position; }
 		}
 
 		public IBinaryRecord Read()
