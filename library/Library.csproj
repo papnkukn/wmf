@@ -54,7 +54,9 @@
     <Compile Include="Enums\PitchFont.cs" />
     <Compile Include="Enums\PolyFillMode.cs" />
     <Compile Include="Enums\TextAlignmentMode.cs" />
+    <Compile Include="Records\WmfChordRecord.cs" />
     <Compile Include="Records\WmfCreatePalette.cs" />
+    <Compile Include="Records\WmfPieRecord.cs" />
     <Compile Include="Records\WmfRealizePalette.cs" />
     <Compile Include="Records\WmfSelectPalette.cs" />
     <Compile Include="Records\WmfSetBkModeRecord.cs" />
