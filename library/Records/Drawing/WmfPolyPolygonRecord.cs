@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
-	[WmfRecord(Type = RecordType.META_POLYPOLYGON)] //Variable size
+	[WmfRecord(Type = RecordType.META_POLYPOLYGON, SizeIsVariable = true)]
 	public class WmfPolyPolygonRecord : WmfBinaryRecord
 	{
 		public WmfPolyPolygonRecord() : base()

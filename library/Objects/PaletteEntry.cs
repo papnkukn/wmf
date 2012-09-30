@@ -3,11 +3,12 @@ using System.Text;
 
 namespace Oxage.Wmf.Objects
 {
-	public class WmfPaletteEntryObject : WmfBinaryObject
+	[WmfObject(Size = 4)]
+	public class PaletteEntry : WmfBinaryObject
 	{
 		public const uint SizeBytes = 4;
 
-		public WmfPaletteEntryObject() : base()
+		public PaletteEntry() : base()
 		{
 		}
 

@@ -53,7 +53,9 @@ namespace Oxage.Wmf
 				return header;
 			}
 
-			uint length = reader.ReadUInt32();
+			long begin = reader.BaseStream.Position;
+
+			uint length = reader.ReadUInt32(); //Length in WORDs
 			ushort type = reader.ReadUInt16();
 
 			var rt = (RecordType)type;
@@ -67,6 +69,15 @@ namespace Oxage.Wmf
 
 			record.RecordSize = length;
 			record.Read(reader);
+
+			long end = reader.BaseStream.Position;
+			long rlen = end - begin; //Read length
+			long excess = 2 * length - rlen;
+			if (excess > 0)
+			{
+				//Oops, reader did not read whole record?!
+				reader.Skip((int)excess);
+			}
 
 			return record;
 		}

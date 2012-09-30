@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.IO;
 
 namespace Oxage.Wmf.Records
 {
@@ -13,7 +10,7 @@ namespace Oxage.Wmf.Records
 		{
 		}
 
-		public short Palette
+		public ushort Palette
 		{
 			get;
 			set;
@@ -21,7 +18,7 @@ namespace Oxage.Wmf.Records
 
 		public override void Read(BinaryReader reader)
 		{
-			this.Palette = reader.ReadInt16();
+			this.Palette = reader.ReadUInt16();
 		}
 
 		public override void Write(BinaryWriter writer)

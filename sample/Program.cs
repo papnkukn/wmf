@@ -14,9 +14,9 @@ namespace Oxage
 #if DEBUG
 			if (Debugger.IsAttached)
 			{
-				//var wmf = new WmfDocument();
-				//wmf.Load("sample.wmf");
-				CreateFeatureSample("sample.wmf");
+				var wmf = new WmfDocument();
+				wmf.Load("sample.wmf");
+				//CreateFeatureSample("sample.wmf");
 				return;
 			}
 #endif

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
-	[WmfRecord(Type = RecordType.META_CREATEFONTINDIRECT)] //Variable size
+	[WmfRecord(Type = RecordType.META_CREATEFONTINDIRECT, SizeIsVariable = true)]
 	public class WmfCreateFontIndirectRecord : WmfBinaryRecord
 	{
 		public WmfCreateFontIndirectRecord() : base()

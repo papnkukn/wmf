@@ -19,6 +19,7 @@ namespace Oxage.Wmf.Records
 		public override void Read(BinaryReader reader)
 		{
 			this.Mode = (PolyFillMode)reader.ReadUInt16();
+			reader.Skip((int)base.RecordSizeBytes - 8);
 		}
 
 		public override void Write(BinaryWriter writer)

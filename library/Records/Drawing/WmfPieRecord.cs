@@ -7,8 +7,7 @@ namespace Oxage.Wmf.Records
 	[WmfRecord(Type = RecordType.META_PIE, Size = 11)]
 	public class WmfPieRecord : WmfBinaryRecord
 	{
-		public WmfPieRecord()
-			: base()
+		public WmfPieRecord() : base()
 		{
 		}
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
-	[WmfRecord(Type = RecordType.META_TEXTOUT)] //Variable size
+	[WmfRecord(Type = RecordType.META_TEXTOUT, SizeIsVariable = true)]
 	public class WmfTextoutRecord : WmfBinaryRecord
 	{
 		public WmfTextoutRecord() : base()
@@ -35,7 +35,7 @@ namespace Oxage.Wmf.Records
 			set;
 		}
 
-		protected Encoding AnsiEncoding
+		protected Encoding StringEncoding
 		{
 			get
 			{
@@ -50,7 +50,7 @@ namespace Oxage.Wmf.Records
 			if (this.StringLength > 0)
 			{
 				byte[] ansi = reader.ReadBytes(this.StringLength);
-				this.StringValue = AnsiEncoding.GetString(ansi);
+				this.StringValue = StringEncoding.GetString(ansi);
 			}
 
 			this.YStart = reader.ReadInt16();
@@ -59,17 +59,12 @@ namespace Oxage.Wmf.Records
 
 		public override void Write(BinaryWriter writer)
 		{
-			byte[] ansi = AnsiEncoding.GetBytes(this.StringValue ?? "");
+			byte[] ansi = StringEncoding.GetBytes(this.StringValue ?? "");
 
 			base.RecordSizeBytes = (uint)(6 /* RecordSize and RecordFunction */ + 2 + ansi.Length + 2 + 2 /* Parameters */);
 			base.Write(writer);
 
-			if (this.StringLength == 0)
-			{
-				this.StringLength = (short)ansi.Length;
-			}
-
-			writer.Write(this.StringLength);
+			writer.Write(this.StringLength > 0 ? this.StringLength : (short)ansi.Length);
 			writer.Write(ansi);
 			writer.Write(this.YStart);
 			writer.Write(this.XStart);

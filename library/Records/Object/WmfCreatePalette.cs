@@ -16,7 +16,7 @@ namespace Oxage.Wmf.Records
 		/// </summary>
 		public short PaletteIndex { get; set; }
 
-		public WmfPaletteObject Palette
+		public Palette Palette
 		{
 			get;
 			set;
@@ -24,7 +24,7 @@ namespace Oxage.Wmf.Records
 
 		public override void Read(BinaryReader reader)
 		{
-			Palette = new WmfPaletteObject(RecordType.META_CREATEPALETTE);
+			Palette = new Palette(RecordType.META_CREATEPALETTE);
 			Palette.Read(reader);
 			this.RecordSizeBytes = Palette.SizeBytes;
 		}

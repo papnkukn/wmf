@@ -25,7 +25,7 @@ namespace Oxage.Wmf.Records
 
 		#region Public properties
 		/// <summary>
-		/// Gets or sets record length in words.
+		/// Gets or sets record length in 16-bit words.
 		/// </summary>
 		public uint RecordSize
 		{

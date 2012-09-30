@@ -3,9 +3,10 @@ using System.Text;
 
 namespace Oxage.Wmf.Objects
 {
-	public class WmfPaletteObject : WmfBinaryObject
+	[WmfObject(SizeIsVariable = true)]
+	public class Palette : WmfBinaryObject
 	{
-		public WmfPaletteObject(RecordType rt) : base()
+		public Palette(RecordType rt) : base()
 		{
 			if (rt == RecordType.META_CREATEPALETTE)
 				this.Start = (short)0x300;
@@ -23,7 +24,7 @@ namespace Oxage.Wmf.Objects
 			set;
 		}
 
-		public WmfPaletteEntryObject[] PaletteEntries
+		public PaletteEntry[] PaletteEntries
 		{
 			get;
 			set;
@@ -36,18 +37,23 @@ namespace Oxage.Wmf.Objects
 				if (PaletteEntries == null)
 					return 4;
 				else
-					return 4 + (uint)PaletteEntries.Length * WmfPaletteEntryObject.SizeBytes;
+					return 4 + (uint)PaletteEntries.Length * PaletteEntry.SizeBytes;
 			}
+		}
+
+		public override int GetSize()
+		{
+			return (int)this.SizeBytes;
 		}
 
 		public override void Read(BinaryReader reader)
 		{
 			this.Start = reader.ReadInt16();
 			this.NumberOfEntries = reader.ReadInt16();
-			PaletteEntries = new WmfPaletteEntryObject[this.NumberOfEntries];
+			PaletteEntries = new PaletteEntry[this.NumberOfEntries];
 			for (int i = 0; i < NumberOfEntries; i++)
 			{
-				PaletteEntries[i] = new WmfPaletteEntryObject();
+				PaletteEntries[i] = new PaletteEntry();
 				PaletteEntries[i].Read(reader);
 			}
 		}

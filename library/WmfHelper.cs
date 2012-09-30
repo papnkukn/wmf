@@ -103,5 +103,15 @@ namespace Oxage.Wmf
 
 			return wmf;
 		}
+
+		/// <summary>
+		/// Gets byte array dump as human-readable "byte[n]" or "null" instead of binary data.
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		public static string DumpByteArray(byte[] data)
+		{
+			return (data != null ? "byte[" + data.Length + "]" : "null");
+		}
 	}
 }

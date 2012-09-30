@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
-	[WmfRecord(Type = RecordType.META_POLYLINE)] //Variable size
+	[WmfRecord(Type = RecordType.META_POLYLINE, SizeIsVariable = true)]
 	public class WmfPolylineRecord : WmfBinaryRecord
 	{
 		public WmfPolylineRecord() : base()
@@ -60,7 +60,7 @@ namespace Oxage.Wmf.Records
 		{
 			base.Dump(builder);
 			builder.AppendLine("NumberOfPoints: " + this.NumberOfPoints);
-			builder.AppendLine("Points:");
+			builder.AppendLine("aPoints:");
 
 			for (int i = 0; i < this.Points.Count; i++)
 			{

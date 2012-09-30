@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Oxage.Wmf.Records
 {
-	[WmfRecord(Type = RecordType.META_SETBKMODE /* Size = 4 */)] //Fixed size by spec. but some WMF files have variable size
+	[WmfRecord(Type = RecordType.META_SETBKMODE, Size = 4)]
 	public class WmfSetBkModeRecord : WmfBinaryRecord
 	{
 		public WmfSetBkModeRecord() : base()
@@ -19,18 +19,10 @@ namespace Oxage.Wmf.Records
 		public override void Read(BinaryReader reader)
 		{
 			this.Mode = (MixMode)reader.ReadUInt16();
-
-			//Work-around for some WMF files
-			if (base.RecordSizeBytes > 8)
-			{
-				//Skip unknown bytes
-				reader.BaseStream.Seek(base.RecordSizeBytes - 8, SeekOrigin.Current);
-			}
 		}
 
 		public override void Write(BinaryWriter writer)
 		{
-			base.RecordSize = 4;
 			base.Write(writer);
 			writer.Write((ushort)this.Mode);
 		}

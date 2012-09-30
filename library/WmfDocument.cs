@@ -192,24 +192,39 @@ namespace Oxage.Wmf
 		/// Add a line from current Position to (x,y)
 		/// </summary>
 		/// <param name="destination"></param>
-		public void AddLineTo(int x, int y)
+		public WmfLineToRecord AddLineTo(int x, int y)
 		{
 			var record = new WmfLineToRecord();
 			record.SetDestination(new Point(x, y));
 			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddPolyline(IEnumerable<Point> points)
+		public WmfPolylineRecord AddPolyline(IEnumerable<Point> points)
 		{
 			var list = points.ToList();
-			this.Records.Add(new WmfPolylineRecord()
+			var record = new WmfPolylineRecord()
 			{
 				NumberOfPoints = (short)list.Count,
 				Points = list
-			});
+			};
+			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddPolyPolygon(IEnumerable<IEnumerable<Point>> polygons)
+		public WmfPolygonRecord AddPolygon(IEnumerable<Point> points)
+		{
+			var list = points.ToList();
+			var record = new WmfPolygonRecord()
+			{
+				NumberOfPoints = (short)list.Count,
+				Points = list
+			};
+			this.Records.Add(record);
+			return record;
+		}
+
+		public WmfPolyPolygonRecord AddPolyPolygon(IEnumerable<IEnumerable<Point>> polygons)
 		{
 			var list = polygons.ToList();
 
@@ -230,19 +245,20 @@ namespace Oxage.Wmf
 			}
 
 			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddRectangle(int x, int y, int width, int height, int cornerRadius = 0)
+		public IBinaryRecord AddRectangle(int x, int y, int width, int height, int cornerRadius = 0)
 		{
-			AddRectangle(new Rectangle(x, y, width, height), cornerRadius);
+			return AddRectangle(new Rectangle(x, y, width, height), cornerRadius);
 		}
 
-		public void AddRectangle(Point corner, Size size, int cornerRadius = 0)
+		public IBinaryRecord AddRectangle(Point corner, Size size, int cornerRadius = 0)
 		{
-			AddRectangle(new Rectangle(corner.X, corner.Y, size.Width, size.Height), cornerRadius);
+			return AddRectangle(new Rectangle(corner.X, corner.Y, size.Width, size.Height), cornerRadius);
 		}
 
-		public void AddRectangle(Rectangle rect, int cornerRadius = 0)
+		public IBinaryRecord AddRectangle(Rectangle rect, int cornerRadius = 0)
 		{
 			if (cornerRadius > 0)
 			{
@@ -250,6 +266,7 @@ namespace Oxage.Wmf
 				var record = new WmfRoundRectRecord();
 				record.SetRectangle(rect, cornerRadius);
 				this.Records.Add(record);
+				return record;
 			}
 			else
 			{
@@ -257,6 +274,7 @@ namespace Oxage.Wmf
 				var record = new WmfRectangleRecord();
 				record.SetRectangle(rect);
 				this.Records.Add(record);
+				return record;
 			}
 		}
 
@@ -267,11 +285,12 @@ namespace Oxage.Wmf
 		/// <param name="y"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public void AddEllipse(int x, int y, int width, int height)
+		public WmfEllipseRecord AddEllipse(int x, int y, int width, int height)
 		{
 			var record = new WmfEllipseRecord();
 			record.SetRectangle(new Rectangle(x, y, width, height));
 			this.Records.Add(record);
+			return record;
 		}
 
 		/// <summary>
@@ -279,11 +298,12 @@ namespace Oxage.Wmf
 		/// </summary>
 		/// <param name="center"></param>
 		/// <param name="radius"></param>
-		public void AddEllipse(Point center, Point radius)
+		public WmfEllipseRecord AddEllipse(Point center, Point radius)
 		{
 			var record = new WmfEllipseRecord();
 			record.SetEllipse(center, radius);
 			this.Records.Add(record);
+			return record;
 		}
 
 		/// <summary>
@@ -291,9 +311,9 @@ namespace Oxage.Wmf
 		/// </summary>
 		/// <param name="center"></param>
 		/// <param name="radius"></param>
-		public void AddCircle(int x, int y, int radius)
+		public WmfEllipseRecord AddCircle(int x, int y, int radius)
 		{
-			AddEllipse(new Point(x, y), new Point(radius, radius));
+			return AddEllipse(new Point(x, y), new Point(radius, radius));
 		}
 
 		/// <summary>
@@ -301,9 +321,9 @@ namespace Oxage.Wmf
 		/// </summary>
 		/// <param name="center"></param>
 		/// <param name="radius"></param>
-		public void AddCircle(Point center, int radius)
+		public WmfEllipseRecord AddCircle(Point center, int radius)
 		{
-			AddEllipse(center, new Point(radius, radius));
+			return AddEllipse(center, new Point(radius, radius));
 		}
 
 		/// <summary>
@@ -312,16 +332,19 @@ namespace Oxage.Wmf
 		/// <param name="rectangle"></param>
 		/// <param name="start"></param>
 		/// <param name="end"></param>
-		public void AddArc(Rectangle rectangle, Point start, Point end)
+		public WmfArcRecord AddArc(Rectangle rectangle, Point start, Point end)
 		{
 			var record = new WmfArcRecord();
 			record.SetArc(rectangle, start, end);
 			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddPolyFillMode(PolyFillMode mode)
+		public WmfSetPolyFillModeRecord AddPolyFillMode(PolyFillMode mode)
 		{
-			this.Records.Add(new WmfSetPolyFillModeRecord() { Mode = mode });
+			var record = new WmfSetPolyFillModeRecord() { Mode = mode };
+			this.Records.Add(record);
+			return record;
 		}
 
 		public WmfCreateBrushIndirectRecord AddCreateBrushIndirect(Color color, BrushStyle style = BrushStyle.BS_SOLID, HatchStyle hatch = HatchStyle.HS_HORIZONTAL)
@@ -365,29 +388,35 @@ namespace Oxage.Wmf
 			return record;
 		}
 
-		public void AddTextAlignment(TextAlignmentMode mode)
+		public WmfSetTextAlignRecord AddTextAlignment(TextAlignmentMode mode)
 		{
-			this.Records.Add(new WmfSetTextAlignRecord() { Mode = mode });
+			var record = new WmfSetTextAlignRecord() { Mode = mode };
+			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddTextColor(Color color)
+		public WmfSetTextColorRecord AddTextColor(Color color)
 		{
-			this.Records.Add(new WmfSetTextColorRecord() { Color = color });
+			var record = new WmfSetTextColorRecord() { Color = color };
+			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddText(string text, int x = 0, int y = 0)
+		public WmfTextoutRecord AddText(string text, int x = 0, int y = 0)
 		{
-			this.Records.Add(new WmfTextoutRecord()
+			var record = new WmfTextoutRecord()
 			{
 				StringValue = text,
 				XStart = (short)x,
 				YStart = (short)y
-			});
+			};
+			this.Records.Add(record);
+			return record;
 		}
 
-		public void AddText(string text, Point start)
+		public WmfTextoutRecord AddText(string text, Point start)
 		{
-			AddText(text, start.X, start.Y);
+			return AddText(text, start.X, start.Y);
 		}
 	}
 }
