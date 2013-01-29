@@ -17,6 +17,7 @@ namespace Oxage
 				var wmf = new WmfDocument();
 				wmf.Load("sample.wmf");
 				//CreateFeatureSample("sample.wmf");
+				CreateOddTextLengthSample("sample.wmf");
 				return;
 			}
 #endif
@@ -122,6 +123,37 @@ namespace Oxage
 			wmf.AddDeleteObject(0);
 			wmf.AddDeleteObject(1);
 			wmf.AddDeleteObject(2);
+			wmf.Save(path);
+		}
+
+		/// <summary>
+		/// Creates an example described on http://wmf.codeplex.com/discussions/430250
+		/// </summary>
+		/// <param name="path"></param>
+		/// <remarks>
+		/// Thanks to aweswhen for finding the solution.
+		/// </remarks>
+		public static void CreateOddTextLengthSample(string path)
+		{
+			var wmf = new Oxage.Wmf.WmfDocument();
+			wmf.Width = 700;
+			wmf.Height = 1400;
+			wmf.Format.Unit = 288;
+			//wmf.AddPolyFillMode(Oxage.Wmf.PolyFillMode.WINDING);
+			//wmf.AddCreateBrushIndirect(Color.Blue, Oxage.Wmf.BrushStyle.BS_SOLID);
+			//wmf.AddSelectObject(0);
+			wmf.AddCreatePenIndirect(Color.Black, Oxage.Wmf.PenStyle.PS_SOLID, 1);
+			wmf.AddSelectObject(0);
+			wmf.AddRectangle(100, 100, 500, 2000);
+			wmf.AddCircle(500, 1200, 100);
+			wmf.AddCreateFontIndirect("arial", 60);
+			wmf.AddSelectObject(1);
+			wmf.AddText("1000", new Point(400, 1100));
+			wmf.AddText("wikywhen", new Point(100, 1100)); //Even-length text
+			wmf.AddText("hello world", new Point(100, 800)); //Odd-length text
+			wmf.AddDeleteObject(0);
+			wmf.AddDeleteObject(1);
+			//wmf.AddCircle(50, 50, 200);              
 			wmf.Save(path);
 		}
 	}

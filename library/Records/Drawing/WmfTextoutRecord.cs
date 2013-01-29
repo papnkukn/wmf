@@ -60,12 +60,20 @@ namespace Oxage.Wmf.Records
 		public override void Write(BinaryWriter writer)
 		{
 			byte[] ansi = StringEncoding.GetBytes(this.StringValue ?? "");
+			int offset = (ansi.Length % 2 == 1 ? +1 : +0); //1 extra byte for odd-length string
 
-			base.RecordSizeBytes = (uint)(6 /* RecordSize and RecordFunction */ + 2 + ansi.Length + 2 + 2 /* Parameters */);
+			base.RecordSizeBytes = (uint)(6 /* RecordSize and RecordFunction */ + 2 + (ansi.Length + offset) + 2 + 2 /* Parameters */);
 			base.Write(writer);
-
-			writer.Write(this.StringLength > 0 ? this.StringLength : (short)ansi.Length);
+			
+			writer.Write(this.StringLength > 0 ? this.StringLength : (short)(ansi.Length + offset));
 			writer.Write(ansi);
+
+			if (ansi.Length % 2 == 1)
+			{
+				//Write a dummy byte after odd-length string so the record aligns to 16-bit boundary
+				writer.Write((byte)0x00);
+			}
+
 			writer.Write(this.YStart);
 			writer.Write(this.XStart);
 		}
