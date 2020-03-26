@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Oxage.Wmf</RootNamespace>
     <AssemblyName>Oxage.Wmf</AssemblyName>
-    <VersionPrefix>0.6</VersionPrefix>
+    <VersionPrefix>0.5</VersionPrefix>
     <VersionSuffix></VersionSuffix>
   </PropertyGroup>
 
