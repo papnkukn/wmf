@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Text;
 using Oxage.Wmf;
 using Oxage.Wmf.Records;
 
@@ -36,6 +37,8 @@ namespace Oxage
 				Console.WriteLine("  wmf dump file.wmf");
 				return;
 			}
+
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			string action = args[0];
 			string path = args[1];
