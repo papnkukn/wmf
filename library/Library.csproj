@@ -15,8 +15,10 @@
     <Authors>Oxage</Authors>
     <Company>Oxage</Company>
     <Copyright>Copyright © Oxage 2012</Copyright>
-    <PackageId>Oxage.Wmf</PackageId>
     <Description>WMF Reader and Writer</Description>
+    <PackageId>Oxage.Wmf</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/wieslawsoltes/wmf</PackageProjectUrl>
     <PackageTags>wmf;emf;windows;metafile;reader;writer;gdi;drawing</PackageTags>
   </PropertyGroup>
 
