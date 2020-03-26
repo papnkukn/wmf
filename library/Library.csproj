@@ -1,176 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9D44E324-1E23-4726-8E4C-AAB3FD2C7C1E}</ProjectGuid>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Oxage.Wmf</RootNamespace>
     <AssemblyName>Oxage.Wmf</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <VersionPrefix>0.6</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup>
+    <VersionPrefix>0.5</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Authors>Oxage</Authors>
+    <Company>Oxage</Company>
+    <Copyright>Copyright © Oxage 2012</Copyright>
+    <PackageId>Oxage.Wmf</PackageId>
+    <Description>WMF Reader and Writer</Description>
+    <PackageTags>wmf;emf;windows;metafile;reader;writer;gdi;drawing</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Attributes\WmfObjectAttribute.cs" />
-    <Compile Include="Enums\BrushStyle.cs" />
-    <Compile Include="Enums\CharacterSet.cs" />
-    <Compile Include="Enums\ClipPrecision.cs" />
-    <Compile Include="Enums\BinaryRasterOperation.cs" />
-    <Compile Include="Enums\BitCount.cs" />
-    <Compile Include="Enums\ColorUsage.cs" />
-    <Compile Include="Enums\Compression.cs" />
-    <Compile Include="Enums\TernaryRasterOperation.cs" />
-    <Compile Include="Enums\StretchMode.cs" />
-    <Compile Include="Enums\PostScriptJoin.cs" />
-    <Compile Include="Enums\PostScriptFeatureSetting.cs" />
-    <Compile Include="Enums\PostScriptCap.cs" />
-    <Compile Include="Enums\MetafileVersion.cs" />
-    <Compile Include="Enums\MetafileEscapes.cs" />
-    <Compile Include="Enums\LogicalColorSpaceV5.cs" />
-    <Compile Include="Enums\LogicalColorSpace.cs" />
-    <Compile Include="Enums\Layout.cs" />
-    <Compile Include="Enums\GamutMappingIntent.cs" />
-    <Compile Include="Enums\FloodFill.cs" />
-    <Compile Include="Enums\ExtTextOutOptions.cs" />
-    <Compile Include="Enums\FamilyFont.cs" />
-    <Compile Include="Enums\FontQuality.cs" />
-    <Compile Include="Enums\HatchStyle.cs" />
-    <Compile Include="Enums\MapMode.cs" />
-    <Compile Include="Enums\MixMode.cs" />
-    <Compile Include="Enums\OutPrecision.cs" />
-    <Compile Include="Enums\PaletteEntryFlag.cs" />
-    <Compile Include="Enums\PenStyle.cs" />
-    <Compile Include="Enums\PitchFont.cs" />
-    <Compile Include="Enums\PolyFillMode.cs" />
-    <Compile Include="Enums\TextAlignmentMode.cs" />
-    <Compile Include="Extensions\BinaryReaderExtensions.cs" />
-    <Compile Include="Extensions\BinaryWriterExtensions.cs" />
-    <Compile Include="Interfaces\IDIBHeaderInfo.cs" />
-    <Compile Include="Interfaces\IBinaryObject.cs" />
-    <Compile Include="Objects\Pen.cs" />
-    <Compile Include="Objects\PointS.cs" />
-    <Compile Include="Objects\PointL.cs" />
-    <Compile Include="Objects\Rect.cs" />
-    <Compile Include="Objects\RectL.cs" />
-    <Compile Include="Objects\RGBQuad.cs" />
-    <Compile Include="Objects\SizeL.cs" />
-    <Compile Include="Objects\Scan.cs" />
-    <Compile Include="Objects\Region.cs" />
-    <Compile Include="Objects\DeviceIndependentBitmap.cs" />
-    <Compile Include="Objects\Bitmap16.cs" />
-    <Compile Include="Objects\ColorRef.cs" />
-    <Compile Include="Objects\CIEXYZTriple.cs" />
-    <Compile Include="Objects\CIEXYZ.cs" />
-    <Compile Include="Objects\BitmapV5Header.cs" />
-    <Compile Include="Objects\BitmapV4Header.cs" />
-    <Compile Include="Objects\BitmapInfoHeader.cs" />
-    <Compile Include="Objects\BitmapCoreHeader.cs" />
-    <Compile Include="Objects\LogBrush.cs" />
-    <Compile Include="Records\Bitmap\WmfStretchDIBRecord.cs" />
-    <Compile Include="Records\Bitmap\WmfStretchBltRecord.cs" />
-    <Compile Include="Records\Bitmap\WmfSetDIBToDevRecord.cs" />
-    <Compile Include="Records\Bitmap\WmfDIBStretchBltRecord.cs" />
-    <Compile Include="Records\Bitmap\WmfDIBBitBltRecord.cs" />
-    <Compile Include="Records\Drawing\WmfPolygonRecord.cs" />
-    <Compile Include="Records\Drawing\WmfPatBltRecord.cs" />
-    <Compile Include="Records\Drawing\WmfPaintRegionRecord.cs" />
-    <Compile Include="Records\Drawing\WmfInvertRegionRecord.cs" />
-    <Compile Include="Records\Drawing\WmfFrameRegionRecord.cs" />
-    <Compile Include="Records\Drawing\WmfFloodFillRecord.cs" />
-    <Compile Include="Records\Drawing\WmfFillRegionRecord.cs" />
-    <Compile Include="Records\Drawing\WmfExtTextoutRecord.cs" />
-    <Compile Include="Records\Drawing\WmfExtFloodFillRecord.cs" />
-    <Compile Include="Records\Object\WmfSelectClipRegionRecord.cs" />
-    <Compile Include="Records\Object\WmfDIBCreatePatternBrushRecord.cs" />
-    <Compile Include="Records\Object\WmfCreateRegionRecord.cs" />
-    <Compile Include="Records\Object\WmfCreatePatternBrushRecord.cs" />
-    <Compile Include="Records\Bitmap\WmfBitBltRecord.cs" />
-    <Compile Include="Records\Drawing\WmfChordRecord.cs" />
-    <Compile Include="Records\Object\WmfCreatePalette.cs" />
-    <Compile Include="Records\Drawing\WmfPieRecord.cs" />
-    <Compile Include="Records\State\WmfRealizePalette.cs" />
-    <Compile Include="Records\Object\WmfSelectPalette.cs" />
-    <Compile Include="Records\State\WmfSetBkModeRecord.cs" />
-    <Compile Include="Records\Object\WmfCreateFontIndirectRecord.cs" />
-    <Compile Include="Records\State\WmfSetTextJustificationRecord.cs" />
-    <Compile Include="Records\State\WmfSetTextColorRecord.cs" />
-    <Compile Include="Records\State\WmfSetTextCharExtraRecord.cs" />
-    <Compile Include="Records\State\WmfSetTextAlignRecord.cs" />
-    <Compile Include="Records\Drawing\WmfTextoutRecord.cs" />
-    <Compile Include="Records\Drawing\WmfSetPixelRecord.cs" />
-    <Compile Include="Records\Drawing\WmfRoundRectRecord.cs" />
-    <Compile Include="Records\Drawing\WmfArcRecord.cs" />
-    <Compile Include="Records\Drawing\WmfEllipseRecord.cs" />
-    <Compile Include="Records\State\WmfMoveToRecord.cs" />
-    <Compile Include="Records\Drawing\WmfLineToRecord.cs" />
-    <Compile Include="Records\Drawing\WmfPolyPolygonRecord.cs" />
-    <Compile Include="Records\State\WmfSetPolyFillModeRecord.cs" />
-    <Compile Include="Records\Drawing\WmfRectangleRecord.cs" />
-    <Compile Include="Objects\WmfBinaryObject.cs" />
-    <Compile Include="Objects\PaletteEntry.cs" />
-    <Compile Include="Objects\Palette.cs" />
-    <Compile Include="WmfHelper.cs" />
-    <Compile Include="WmfReader.cs" />
-    <Compile Include="Enums\MetafileType.cs" />
-    <Compile Include="Enums\RecordType.cs" />
-    <Compile Include="Interfaces\IBinaryRecord.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Records\WmfBinaryRecord.cs" />
-    <Compile Include="Records\Object\WmfCreateBrushIndirectRecord.cs" />
-    <Compile Include="Records\Object\WmfCreatePenIndirectRecord.cs" />
-    <Compile Include="Records\Object\WmfDeleteObjectRecord.cs" />
-    <Compile Include="Records\Control\WmfEndOfFileRecord.cs" />
-    <Compile Include="Records\Drawing\WmfPolylineRecord.cs" />
-    <Compile Include="Records\Object\WmfSelectObjectRecord.cs" />
-    <Compile Include="Records\State\WmfSetMapModeRecord.cs" />
-    <Compile Include="Records\State\WmfSetWindowExtRecord.cs" />
-    <Compile Include="Records\State\WmfSetWindowOrgRecord.cs" />
-    <Compile Include="Records\WmfUnknownRecord.cs" />
-    <Compile Include="WmfDocument.cs" />
-    <Compile Include="WmfException.cs" />
-    <Compile Include="Records\WmfFormat.cs" />
-    <Compile Include="Records\Control\WmfHeader.cs" />
-    <Compile Include="Attributes\WmfRecordAttribute.cs" />
-    <Compile Include="WmfWriter.cs" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Records\Escape\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
