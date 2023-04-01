@@ -73,6 +73,10 @@ namespace Oxage.Wmf.Objects
 			else if (this.DIBHeaderInfo is BitmapInfoHeader)
 			{
 				var header = this.DIBHeaderInfo as BitmapInfoHeader;
+				var colors = (int)header.ColorUsed;
+				if (colors == 0) colors = 1 << (int)header.BitCount;
+				Colors = reader.ReadBytes(colors * 4);
+
 				switch (header.Compression)
 				{
 					case Compression.BI_RGB:
