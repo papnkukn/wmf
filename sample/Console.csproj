@@ -5,6 +5,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Oxage</RootNamespace>
     <AssemblyName>wmf</AssemblyName>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
