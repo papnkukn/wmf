@@ -7,6 +7,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "sample\Console.c
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "library\Library.csproj", "{9D44E324-1E23-4726-8E4C-AAB3FD2C7C1E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B97138F1-AEE4-4BDB-9546-D7DDB34878FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{8D4EF1C6-5483-4C76-83F6-74EF07986AA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C3880503-92E3-4E79-9D86-E911465F8974}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{03CD658F-BB16-4EB5-972F-F06D666AD955}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,5 +43,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1222DADC-CF06-4CBE-8621-F1AE649FA998}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9D44E324-1E23-4726-8E4C-AAB3FD2C7C1E} = {B97138F1-AEE4-4BDB-9546-D7DDB34878FC}
+		{5B3E5BA0-596A-41F9-8C91-08D712E7E710} = {8D4EF1C6-5483-4C76-83F6-74EF07986AA9}
 	EndGlobalSection
 EndGlobal
